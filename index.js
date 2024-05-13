@@ -1,22 +1,18 @@
-function minStack() {
-  this.stack = [];
-  this.minStack = [];
+function isValidSudoku(board) {
+  const rows = new Array(9).fill().map(() => new Array(9).fill(0));
+  const cols = new Array(9).fill().map(() => new Array(9).fill(0));
+  const boxes = new Array(9).fill().map(() => new Array(9).fill(0));
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (board[i][j] !== ".") {
+        const num = Number(board[i][j]) - 1;
+        const k = Math.floor(i / 3) * 3 + Math.floor(j / 3);
+        if (rows[i][num] || cols[j][num] || boxes[k][num]) return false;
+        rows[i][num] = 1;
+        cols[j][num] = 1;
+        boxes[k][num] = 1;
+      }
+    }
+  }
+  return true;
 }
-minStack.prototype.push = function (x) {
-  this.stack.push(x);
-  if (
-    this.minStack.length === 0 ||
-    x <= this.minStack[this.minStack.length - 1]
-  )
-    this.minStack.push(x);
-};
-minStack.prototype.pop = function () {
-  if (this.stack.pop() === this.minStack[this.minStack.length - 1])
-    this.minStack.pop();
-};
-minStack.prototype.top = function () {
-  return this.stack[this.stack.length - 1];
-};
-minStack.prototype.getMin = function () {
-  return this.minStack[this.minStack.length - 1];
-};
